@@ -173,6 +173,10 @@
   [data-en]{display:none}
   html[lang="en"] [data-fr]{display:none}
   html[lang="en"] [data-en]{display:inline}
+  /* listes formation : data-grid l'emporte sur [data-en], on force le masquage par langue */
+  .formation ul[data-en]{display:none}
+  html[lang="en"] .formation ul[data-fr]{display:none}
+  html[lang="en"] .formation ul[data-en]{display:grid}
 
   @media(max-width:680px){.stats{grid-template-columns:repeat(2,1fr)}}
 
@@ -185,41 +189,54 @@
     /* flux : on laisse les sections se répartir, on protège les cartes */
     section{padding:6px 0;break-inside:auto}
     .sec-title{margin-bottom:7px;break-after:avoid;font-size:11px}
+    /* pagination forcee : 1 hero+formation · 2 projets · 3 stack+langues · 4 parcours */
+    #sec-projets,#sec-skills,#sec-xp{break-before:page}
+    #sec-langues{break-before:avoid}
     .formation,.proj,.skill-cat,.lng,.xp,.stat{break-inside:avoid}
     /* cartes : pas d'ombre ni de flou, bordure légère */
     .glass,.proj,.stat,.skill-cat,.lng,.formation,.chip{box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:#fff;border:1px solid #e4e4ea}
-    /* hero compact */
-    .hero{padding:4px 0 8px}
-    h1.name{font-size:32px}
-    .role{font-size:16px;margin-top:7px}
-    .tagline{font-size:12px;margin-top:7px;max-width:none}
-    .contacts{margin-top:11px;gap:7px}
-    .chip{padding:5px 11px;font-size:11px}
-    .stats{margin:11px 0;gap:9px}
-    .stat{padding:9px}
-    .stat b{font-size:21px}
-    /* formation */
-    .formation{padding:13px}
-    .formation h3{font-size:16px}
-    .formation .period{margin:3px 0 7px}
-    .formation ul{gap:3px}
-    .formation li{font-size:12px}
+    /* hero aere (page 1 : on remplit la page) */
+    .hero{padding:46px 0 18px}
+    h1.name{font-size:35px}
+    .role{font-size:17px;margin-top:11px}
+    .tagline{font-size:12.5px;margin-top:11px;max-width:none}
+    .contacts{margin-top:22px;gap:9px}
+    .chip{padding:7px 13px;font-size:11.5px}
+    .stats{margin:34px 0;gap:12px}
+    .stat{padding:18px}
+    .stat b{font-size:24px}
+    /* formation (seule sur page 1 : on aere) */
+    #sec-formation{padding:26px 0}
+    .formation{padding:24px}
+    .formation h3{font-size:17px}
+    .formation .period{margin:7px 0 14px}
+    .formation ul{gap:10px}
+    .formation li{font-size:13px}
+    #sec-formation .formation+.formation{margin-top:40px!important}
     /* projets */
     .proj-grid{gap:10px}
     .proj{padding:12px}
     .proj h4{font-size:14px}
     .proj p{font-size:11.5px;-webkit-line-clamp:3}
-    /* skills */
-    .skill-grid{gap:10px}
-    .skill-cat{padding:12px}
+    /* skills (page 3 : on aere pour remplir) */
+    #sec-skills{padding:30px 0 6px}
+    #sec-skills .sec-title{margin-bottom:18px}
+    .skill-grid{gap:20px}
+    .skill-cat{padding:22px}
+    .skill-cat h4{font-size:15px;margin-bottom:16px}
+    .skill-cat .tags{gap:9px}
+    .tag{padding:5px 11px;font-size:11px}
     /* expérience */
     .timeline{padding-left:22px}
     .xp{margin-bottom:9px}
     .xp p{font-size:12.5px}
     /* langues */
-    .langs{gap:10px;grid-template-columns:repeat(2,1fr)}
-    .lng{padding:12px}
-    .lng .lh{gap:14px}
+    #sec-langues{padding:26px 0}
+    #sec-langues .sec-title{margin-bottom:18px}
+    .langs{gap:18px;grid-template-columns:repeat(2,1fr)}
+    .lng{padding:22px}
+    .lng .lh{gap:14px;margin-bottom:14px}
+    .lng .bar{height:9px}
     .lng .fill{transition:none}
     /* pas d'animation figée à mi-course */
     h1.name .g{animation:none}
@@ -273,7 +290,7 @@
 </div></header>
 
 <!-- FORMATION -->
-<section><div class="wrap">
+<section id="sec-formation"><div class="wrap">
   <div class="sec-title" data-fr>Formation en cours</div>
   <div class="sec-title" data-en>Current training</div>
   <div class="formation glass">
@@ -316,30 +333,21 @@
 </div></section>
 
 <!-- PROJECTS -->
-<section><div class="wrap">
+<section id="sec-projets"><div class="wrap">
   <div class="sec-title" data-fr>Projets métier — cliquez pour le résumé</div>
   <div class="sec-title" data-en>Business projects — click for the summary</div>
   <div class="proj-grid" id="projGrid"></div>
 </div></section>
 
 <!-- SKILLS -->
-<section><div class="wrap">
+<section id="sec-skills"><div class="wrap">
   <div class="sec-title" data-fr>Stack technique</div>
   <div class="sec-title" data-en>Tech stack</div>
   <div class="skill-grid" id="skillGrid"></div>
 </div></section>
 
-<!-- EXPERIENCE -->
-<section><div class="wrap">
-  <div class="sec-title" data-fr>Parcours professionnel</div>
-  <div class="sec-title" data-en>Professional background</div>
-  <p class="tagline" style="margin:0 0 22px 0;text-align:left" data-fr>20 ans de responsabilités opérationnelles — management d'équipes, pilotage par les indicateurs, rigueur et autonomie — autant de compétences que je réinvestis dans la conception de produits tech orientés métier.</p>
-  <p class="tagline" style="margin:0 0 22px 0;text-align:left" data-en>20 years of operational responsibility — team management, data-driven decisions, rigor and autonomy — all skills I now reinvest into building business-focused tech products.</p>
-  <div class="timeline" id="xpList"></div>
-</div></section>
-
 <!-- LANGUAGES -->
-<section><div class="wrap">
+<section id="sec-langues"><div class="wrap">
   <div class="sec-title" data-fr>Langues</div>
   <div class="sec-title" data-en>Languages</div>
   <div class="langs">
@@ -348,6 +356,15 @@
     <div class="lng glass"><div class="lh"><span data-fr>Espagnol</span><span data-en>Spanish</span><span>Débutant / Beginner</span></div><div class="bar"><div class="fill" data-w="30%"></div></div></div>
     <div class="lng glass"><div class="lh"><span data-fr>Chinois (mandarin)</span><span data-en>Chinese (Mandarin)</span><span>Débutant / Beginner</span></div><div class="bar"><div class="fill" data-w="22%"></div></div></div>
   </div>
+</div></section>
+
+<!-- EXPERIENCE -->
+<section id="sec-xp"><div class="wrap">
+  <div class="sec-title" data-fr>Parcours professionnel</div>
+  <div class="sec-title" data-en>Professional background</div>
+  <p class="tagline" style="margin:0 0 22px 0;text-align:left" data-fr>20 ans de responsabilités opérationnelles — management d'équipes, pilotage par les indicateurs, rigueur et autonomie — autant de compétences que je réinvestis dans la conception de produits tech orientés métier.</p>
+  <p class="tagline" style="margin:0 0 22px 0;text-align:left" data-en>20 years of operational responsibility — team management, data-driven decisions, rigor and autonomy — all skills I now reinvest into building business-focused tech products.</p>
+  <div class="timeline" id="xpList"></div>
 </div></section>
 
 <footer>
