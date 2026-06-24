@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stéphane Delestre — AI Architecture Engineer</title>
+<meta name="description" content="CV interactif de Stéphane Delestre — Architecte IA en formation (Jedha). Projets métier, stack technique, parcours.">
+<style>
+  :root{
+    --txt:#1d1d1f; --muted:#6e6e73;
+    --accent:#0071e3; --accent2:#7c3aed; --accent3:#30b06a;
+    --card:rgba(255,255,255,.55); --card-brd:rgba(255,255,255,.8);
+    --glass-blur:saturate(180%) blur(20px);
+    --shadow:0 8px 34px rgba(60,70,120,.12);
+    --shadow-hover:0 16px 48px rgba(60,70,120,.20);
+    --radius:20px; --maxw:1100px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:-apple-system,'SF Pro Display','Segoe UI',system-ui,sans-serif;
+    color:var(--txt); line-height:1.55; overflow-x:hidden; min-height:100vh;
+    background:
+      radial-gradient(1100px 600px at 8% -5%, #d7e9ff 0%, transparent 55%),
+      radial-gradient(900px 600px at 100% 0%, #efe2ff 0%, transparent 50%),
+      radial-gradient(900px 700px at 50% 110%, #d8f7e6 0%, transparent 55%),
+      linear-gradient(180deg,#f5f6fa,#eef0f6);
+    background-attachment:fixed;
+  }
+  /* floating pastel aurora */
+  .aurora{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+  .aurora span{position:absolute;border-radius:50%;filter:blur(80px);opacity:.5;animation:float 20s ease-in-out infinite}
+  .aurora span:nth-child(1){width:46vw;height:46vw;background:#a9cdff;top:-8%;left:-6%}
+  .aurora span:nth-child(2){width:40vw;height:40vw;background:#d9bbff;bottom:-12%;right:-8%;animation-delay:-7s}
+  .aurora span:nth-child(3){width:34vw;height:34vw;background:#aef0cd;top:40%;left:55%;animation-delay:-13s}
+  @keyframes float{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(3%,5%) scale(1.12)}}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px}
+
+  .glass{
+    background:var(--card);
+    -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+    border:1px solid var(--card-brd);
+    box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.6);
+    border-radius:var(--radius);
+  }
+
+  /* Top bar */
+  .topbar{position:sticky;top:0;z-index:50;
+    -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+    background:rgba(255,255,255,.6);border-bottom:1px solid var(--card-brd)}
+  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;padding:11px 22px}
+  .brand{font-weight:600;letter-spacing:.2px;font-size:14.5px;display:flex;align-items:center;gap:9px;color:var(--txt)}
+  .brand .dot{width:8px;height:8px;border-radius:50%;background:var(--accent3);box-shadow:0 0 9px var(--accent3);animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+  .tb-actions{display:flex;gap:10px;align-items:center}
+  .btn{cursor:pointer;border:1px solid var(--card-brd);background:rgba(255,255,255,.6);
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:var(--txt);
+    padding:8px 15px;border-radius:12px;font-size:13px;font-weight:600;transition:.25s;display:inline-flex;gap:7px;align-items:center}
+  .btn:hover{border-color:var(--accent);box-shadow:var(--shadow-hover);transform:translateY(-1px);color:var(--accent)}
+  .lang-toggle{display:flex;border:1px solid var(--card-brd);border-radius:12px;overflow:hidden;background:rgba(255,255,255,.5)}
+  .lang-toggle button{background:transparent;border:0;color:var(--muted);padding:7px 14px;cursor:pointer;font-weight:700;font-size:12px;transition:.2s}
+  .lang-toggle button.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
+
+  /* Hero */
+  .hero{padding:64px 0 26px;text-align:center}
+  .eyebrow{color:var(--accent);font-size:12.5px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:16px}
+  h1.name{font-size:clamp(28px,4.6vw,50px);font-weight:700;line-height:1.05;letter-spacing:-.5px;cursor:pointer;display:inline-block}
+  h1.name .g{background:linear-gradient(120deg,#0071e3,#7c3aed,#30b06a);-webkit-background-clip:text;background-clip:text;color:transparent;background-size:200%;animation:shine 7s linear infinite}
+  @keyframes shine{to{background-position:200%}}
+  .name-hint{display:block;font-size:12px;color:var(--muted);font-weight:500;letter-spacing:.4px;margin-top:12px}
+  .name-hint span{color:var(--accent2);font-weight:700}
+  .role{font-size:clamp(16px,2.3vw,21px);font-weight:600;margin-top:16px;color:#3a3a3e}
+  .role em{font-style:normal;color:var(--accent2)}
+  .tagline{max-width:660px;margin:14px auto 0;color:var(--muted);font-size:15px}
+  .contacts{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:24px}
+  .chip{font-size:13px;color:#3a3a3e;background:rgba(255,255,255,.6);
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid var(--card-brd);
+    padding:8px 15px;border-radius:30px;display:inline-flex;gap:8px;align-items:center;text-decoration:none;transition:.2s}
+  a.chip:hover{border-color:var(--accent);color:var(--accent);box-shadow:var(--shadow-hover)}
+
+  /* Stats */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:44px 0}
+  .stat{padding:20px;text-align:center;transition:.3s}
+  .stat:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover)}
+  .stat b{display:block;font-size:30px;font-weight:800;background:linear-gradient(120deg,#0071e3,#7c3aed);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .stat small{color:var(--muted);font-size:12.5px;letter-spacing:.3px}
+
+  /* Sections */
+  section{padding:32px 0}
+  .sec-title{display:flex;align-items:center;gap:13px;margin-bottom:22px;font-size:12.5px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent)}
+  .sec-title::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(0,113,227,.35),transparent)}
+
+  /* Formation */
+  .formation{padding:26px;position:relative;overflow:hidden}
+  .formation::before{content:"";position:absolute;top:0;left:0;width:4px;height:100%;background:linear-gradient(var(--accent),var(--accent2))}
+  .formation h3{font-size:21px;margin-bottom:4px}
+  .formation .org{color:var(--accent);font-weight:700;font-size:14px}
+  .formation .period{color:var(--muted);font-size:13px;margin:6px 0 12px}
+  .formation ul{list-style:none;display:grid;gap:7px}
+  .formation li{padding-left:22px;position:relative;font-size:14.5px;color:#3a3a3e}
+  .formation li::before{content:"▹";position:absolute;left:0;color:var(--accent3);font-weight:700}
+
+  /* Projects */
+  .proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+  .proj{padding:20px;cursor:pointer;transition:.3s;position:relative;overflow:hidden}
+  .proj:hover{transform:translateY(-5px);box-shadow:var(--shadow-hover);border-color:var(--accent)}
+  .proj .ic{font-size:26px;margin-bottom:10px}
+  .proj h4{font-size:17px;margin-bottom:6px}
+  .proj .pmeta{font-size:12px;color:var(--accent2);font-weight:600;margin-bottom:8px}
+  .proj p{font-size:13.5px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .proj .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+  .tag{font-size:10.5px;background:rgba(0,113,227,.09);color:var(--accent);border:1px solid rgba(0,113,227,.2);padding:3px 9px;border-radius:20px;font-weight:600}
+  .proj .more{position:absolute;bottom:14px;right:16px;font-size:11px;color:var(--accent);opacity:0;transition:.3s}
+  .proj:hover .more{opacity:1}
+  .badge-status{position:absolute;top:14px;right:14px;font-size:10px;padding:3px 9px;border-radius:20px;font-weight:700}
+  .b-live{background:rgba(48,176,106,.14);color:var(--accent3);border:1px solid rgba(48,176,106,.3)}
+  .b-mvp{background:rgba(0,113,227,.12);color:var(--accent);border:1px solid rgba(0,113,227,.25)}
+  .b-wip{background:rgba(124,58,237,.12);color:var(--accent2);border:1px solid rgba(124,58,237,.25)}
+
+  /* Skills */
+  .skill-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+  .skill-cat{padding:20px}
+  .skill-cat h4{font-size:14px;margin-bottom:14px;color:var(--txt);display:flex;gap:8px;align-items:center}
+  .skill-cat .tags{display:flex;flex-wrap:wrap;gap:7px}
+
+  /* Experience */
+  .timeline{position:relative;padding-left:26px}
+  .timeline::before{content:"";position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--accent),transparent)}
+  .xp{position:relative;margin-bottom:22px}
+  .xp::before{content:"";position:absolute;left:-26px;top:5px;width:12px;height:12px;border-radius:50%;background:#fff;border:2px solid var(--accent)}
+  .xp h4{font-size:16px}
+  .xp .org{color:var(--accent);font-size:13px;font-weight:600}
+  .xp .period{color:var(--muted);font-size:12px;margin:2px 0 7px}
+  .xp p{font-size:13.5px;color:#4a4a4f}
+
+  /* Languages */
+  .langs{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+  .lng{padding:18px}
+  .lng .lh{display:flex;justify-content:space-between;font-size:14px;margin-bottom:9px;color:#3a3a3e}
+  .lng .bar{height:7px;border-radius:10px;background:rgba(0,0,0,.07);overflow:hidden}
+  .lng .fill{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0;transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
+
+  /* Modal */
+  .modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:20px;
+    background:rgba(40,44,60,.35);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+  .modal.open{display:flex;animation:fade .3s}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .modal-box{max-width:560px;width:100%;
+    background:rgba(255,255,255,.78);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+    border:1px solid var(--card-brd);box-shadow:0 24px 60px rgba(40,50,90,.28),inset 0 1px 0 rgba(255,255,255,.7);
+    border-radius:24px;padding:30px;position:relative;max-height:88vh;overflow-y:auto;animation:pop .35s cubic-bezier(.2,.9,.3,1.2)}
+  @keyframes pop{from{transform:scale(.92) translateY(14px);opacity:0}to{transform:scale(1);opacity:1}}
+  .modal-close{position:absolute;top:16px;right:16px;cursor:pointer;width:34px;height:34px;border-radius:11px;border:1px solid var(--card-brd);background:rgba(255,255,255,.7);color:var(--txt);font-size:18px;line-height:1}
+  .modal-close:hover{border-color:var(--accent);color:var(--accent)}
+  .modal-box .mh{font-size:24px;font-weight:800;margin-bottom:4px;display:flex;gap:10px;align-items:center}
+  .modal-box .mmeta{color:var(--accent2);font-size:13px;font-weight:600;margin-bottom:16px}
+  .modal-box .mbody{font-size:14.5px;color:#3a3a3e;line-height:1.7}
+  .modal-box .mbody ul{margin:10px 0 10px 18px}
+  .modal-box .mbody code{background:rgba(0,113,227,.1);padding:1px 6px;border-radius:6px;font-size:13px}
+  .modal-box .tags{margin-top:18px}
+  .modal-links{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+
+  /* Photo modal */
+  #photoModal .modal-box{max-width:420px;text-align:center}
+  #photoModal img{width:200px;height:200px;border-radius:50%;object-fit:cover;border:4px solid #fff;
+    box-shadow:0 10px 30px rgba(40,50,90,.25);margin-bottom:18px}
+  #photoModal .who{font-size:22px;font-weight:800}
+  #photoModal .where{color:var(--muted);font-size:14px;margin-top:6px}
+
+  footer{text-align:center;padding:40px 0 60px;color:var(--muted);font-size:12.5px}
+
+  [data-en]{display:none}
+  html[lang="en"] [data-fr]{display:none}
+  html[lang="en"] [data-en]{display:inline}
+
+  @media(max-width:680px){.stats{grid-template-columns:repeat(2,1fr)}}
+
+  @media print{
+    .aurora,.topbar,.proj .more,.name-hint,#photoModal,.modal{display:none!important}
+    body{background:#fff}
+    .glass,.proj,.stat,.skill-cat,.lng,.formation,.chip{box-shadow:none;border-color:#d2d2d7;background:#fff;-webkit-backdrop-filter:none;backdrop-filter:none}
+    section{padding:12px 0;break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="aurora"><span></span><span></span><span></span></div>
+
+<!-- TOP BAR -->
+<div class="topbar"><div class="wrap">
+  <div class="brand"><span class="dot"></span> SD · <span data-fr>Architecte IA</span><span data-en>AI Architect</span></div>
+  <div class="tb-actions">
+    <div class="lang-toggle">
+      <button id="bFr" class="active" onclick="setLang('fr')">FR</button>
+      <button id="bEn" onclick="setLang('en')">EN</button>
+    </div>
+    <button class="btn" onclick="window.print()">⬇ PDF</button>
+  </div>
+</div></div>
+
+<!-- HERO -->
+<header class="hero"><div class="wrap">
+  <div class="eyebrow" data-fr>Reconversion · Data &amp; IA</div>
+  <div class="eyebrow" data-en>Career switch · Data &amp; AI</div>
+  <h1 class="name" onclick="openPhoto()" title="Voir la photo / See photo">
+    <span class="g">STÉPHANE DELESTRE</span>
+    <span class="name-hint" data-fr>👆 clique sur mon nom pour me <span>voir</span></span>
+    <span class="name-hint" data-en>👆 click my name to <span>see me</span></span>
+  </h1>
+  <div class="role">
+    <span data-fr>Ingénieur en Architecture IA <em>(en formation)</em></span>
+    <span data-en>AI Architecture Engineer <em>(in training)</em></span>
+  </div>
+  <p class="tagline" data-fr>20 ans de management commercial &amp; retail, aujourd'hui en pleine reconversion vers l'ingénierie de l'IA. Je conçois et construis des applications <b>métier</b> réelles — du prototype au déploiement.</p>
+  <p class="tagline" data-en>20 years of retail &amp; commercial management, now fully reskilling into AI engineering. I design and ship real-world <b>business</b> applications — from prototype to deployment.</p>
+
+  <div class="contacts">
+    <a class="chip" href="mailto:sdelestre@me.com">✉ sdelestre@me.com</a>
+    <a class="chip" href="tel:+33671753132">📱 06 71 75 31 32</a>
+    <span class="chip">📍 France</span>
+    <a class="chip" href="https://github.com/delestrestd" target="_blank">🐙 github.com/delestrestd</a>
+  </div>
+
+  <div class="stats">
+    <div class="stat glass"><b>10+</b><small data-fr>projets construits</small><small data-en>projects built</small></div>
+    <div class="stat glass"><b>6+</b><small data-fr>langages &amp; stacks</small><small data-en>languages &amp; stacks</small></div>
+    <div class="stat glass"><b>2025→26</b><small data-fr>Formation Jedha</small><small data-en>Jedha bootcamp</small></div>
+    <div class="stat glass"><b>+20</b><small data-fr>ans de terrain</small><small data-en>years in the field</small></div>
+  </div>
+</div></header>
+
+<!-- FORMATION -->
+<section><div class="wrap">
+  <div class="sec-title" data-fr>Formation en cours</div>
+  <div class="sec-title" data-en>Current training</div>
+  <div class="formation glass">
+    <h3 data-fr>Ingénieur Architecture IA</h3>
+    <h3 data-en>AI Architecture Engineer</h3>
+    <div class="org">Jedha Bootcamp — Data Science &amp; Engineering (DSE)</div>
+    <div class="period" data-fr>Novembre 2025 → Mars 2026</div>
+    <div class="period" data-en>November 2025 → March 2026</div>
+    <ul data-fr>
+      <li>Machine Learning &amp; Deep Learning : modélisation, évaluation, mise en production.</li>
+      <li>Data Engineering : pipelines, traitement de données, bases SQL/NoSQL, cloud.</li>
+      <li>Architecture d'applications IA : intégration de LLM, RAG, agents, déploiement.</li>
+      <li>Projets de certification validés (Kayak, Speed Dating) — voir section Projets.</li>
+    </ul>
+    <ul data-en>
+      <li>Machine Learning &amp; Deep Learning: modeling, evaluation, productionization.</li>
+      <li>Data Engineering: pipelines, data processing, SQL/NoSQL databases, cloud.</li>
+      <li>AI application architecture: LLM integration, RAG, agents, deployment.</li>
+      <li>Certification projects passed (Kayak, Speed Dating) — see Projects section.</li>
+    </ul>
+  </div>
+
+  <div class="formation glass" style="margin-top:16px">
+    <h3 data-fr>Formation Cloud AWS <em style="font-style:normal;color:var(--accent2);font-size:14px">(en parallèle)</em></h3>
+    <h3 data-en>AWS Cloud Training <em style="font-style:normal;color:var(--accent2);font-size:14px">(in parallel)</em></h3>
+    <div class="org">Amazon Web Services</div>
+    <div class="period" data-fr>En parallèle de la formation Jedha · 2025–2026</div>
+    <div class="period" data-en>Alongside the Jedha bootcamp · 2025–2026</div>
+    <ul data-fr>
+      <li>Services cloud fondamentaux : calcul, stockage (S3), bases de données, réseau.</li>
+      <li>Déploiement et hébergement d'applications dans le cloud.</li>
+      <li>Bonnes pratiques cloud appliquées à mes projets data &amp; IA.</li>
+    </ul>
+    <ul data-en>
+      <li>Core cloud services: compute, storage (S3), databases, networking.</li>
+      <li>Deploying and hosting applications in the cloud.</li>
+      <li>Cloud best practices applied to my data &amp; AI projects.</li>
+    </ul>
+  </div>
+</div></section>
+
+<!-- PROJECTS -->
+<section><div class="wrap">
+  <div class="sec-title" data-fr>Projets métier — cliquez pour le résumé</div>
+  <div class="sec-title" data-en>Business projects — click for the summary</div>
+  <div class="proj-grid" id="projGrid"></div>
+</div></section>
+
+<!-- SKILLS -->
+<section><div class="wrap">
+  <div class="sec-title" data-fr>Stack technique</div>
+  <div class="sec-title" data-en>Tech stack</div>
+  <div class="skill-grid" id="skillGrid"></div>
+</div></section>
+
+<!-- EXPERIENCE -->
+<section><div class="wrap">
+  <div class="sec-title" data-fr>Parcours professionnel</div>
+  <div class="sec-title" data-en>Professional background</div>
+  <p class="tagline" style="margin:0 0 22px 0;text-align:left" data-fr>20 ans de responsabilités opérationnelles — management d'équipes, pilotage par les indicateurs, rigueur et autonomie — autant de compétences que je réinvestis dans la conception de produits tech orientés métier.</p>
+  <p class="tagline" style="margin:0 0 22px 0;text-align:left" data-en>20 years of operational responsibility — team management, data-driven decisions, rigor and autonomy — all skills I now reinvest into building business-focused tech products.</p>
+  <div class="timeline" id="xpList"></div>
+</div></section>
+
+<!-- LANGUAGES -->
+<section><div class="wrap">
+  <div class="sec-title" data-fr>Langues</div>
+  <div class="sec-title" data-en>Languages</div>
+  <div class="langs">
+    <div class="lng glass"><div class="lh"><span data-fr>Français</span><span data-en>French</span><span data-fr>Langue maternelle</span><span data-en>Native</span></div><div class="bar"><div class="fill" data-w="100%"></div></div></div>
+    <div class="lng glass"><div class="lh"><span data-fr>Anglais</span><span data-en>English</span><span>Intermédiaire / Intermediate</span></div><div class="bar"><div class="fill" data-w="60%"></div></div></div>
+    <div class="lng glass"><div class="lh"><span data-fr>Espagnol</span><span data-en>Spanish</span><span>Débutant / Beginner</span></div><div class="bar"><div class="fill" data-w="30%"></div></div></div>
+    <div class="lng glass"><div class="lh"><span data-fr>Chinois (mandarin)</span><span data-en>Chinese (Mandarin)</span><span>Débutant / Beginner</span></div><div class="bar"><div class="fill" data-w="22%"></div></div></div>
+  </div>
+</div></section>
+
+<footer>
+  <p data-fr>Conçu comme une app web — © 2026 Stéphane Delestre · France</p>
+  <p data-en>Built like a web app — © 2026 Stéphane Delestre · France</p>
+</footer>
+
+<!-- PROJECT MODAL -->
+<div class="modal" id="projModal" onclick="if(event.target===this)closeModal('projModal')">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('projModal')">✕</button>
+    <div class="mh" id="mTitle"></div>
+    <div class="mmeta" id="mMeta"></div>
+    <div class="mbody" id="mBody"></div>
+    <div class="tags" id="mTags"></div>
+    <div class="modal-links" id="mLinks"></div>
+  </div>
+</div>
+
+<!-- PHOTO MODAL -->
+<div class="modal" id="photoModal" onclick="if(event.target===this)closeModal('photoModal')">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('photoModal')">✕</button>
+    <img src="assets/photo.jpg" alt="Stéphane Delestre">
+    <div class="who">Stéphane Delestre</div>
+    <div class="where" data-fr>France · En reconversion vers l'IA 🚀</div>
+    <div class="where" data-en>France · Reskilling into AI 🚀</div>
+  </div>
+</div>
+
+<script>
+/* ---------- DATA (apps orientées métier — sécurité exclue) ---------- */
+const PROJECTS = [
+  {ic:"🥬",icon_status:"b-mvp",status_fr:"Avancé",status_en:"Advanced",
+   title:"FreshControl", meta_fr:"PWA métier · grande distribution", meta_en:"Business PWA · retail",
+   short_fr:"PWA de gestion des produits périmés : scan EAN local, catalogue Google Sheets, alertes DLC.",
+   short_en:"PWA for expired-product management: local EAN scan, Google Sheets catalog, expiry alerts.",
+   body_fr:"PWA professionnelle pour la gestion des dates de péremption en magasin (un vrai besoin terrain GMS).<ul><li>Scanner de code-barres EAN <b>100% local</b> (ZXing, pas d'API).</li><li>Catalogue <b>multi-marques</b> synchronisé via Google Sheets.</li><li>Alertes DLC, planning de tournées par magasin, rappels e-mail.</li><li>Multi-rôles (super admin → lecture seule) et multilingue (FR/EN/ES/ZH).</li></ul>",
+   body_en:"Professional PWA for in-store expiry-date management (a real retail field need).<ul><li><b>100% local</b> EAN barcode scanner (ZXing, no API).</li><li><b>Multi-brand</b> catalog synced via Google Sheets.</li><li>Expiry alerts, per-store route planning, email reminders.</li><li>Multi-role (super admin → read-only) and multilingual (FR/EN/ES/ZH).</li></ul>",
+   tags:["PWA","ZXing","Google Sheets API","i18n","JavaScript"], gh:"FreshControl"},
+
+  {ic:"🚗",icon_status:"b-wip",status_fr:"En cours",status_en:"In progress",
+   title:"Booka", meta_fr:"Plateforme de réservation métier", meta_en:"Business booking platform",
+   short_fr:"Réservation d'entretien automobile en ligne (Speedy, Feu Vert, Norauto, Midas…).",
+   short_en:"Online car-maintenance booking (Speedy, Feu Vert, Norauto, Midas…).",
+   body_fr:"« L'atelier, en un instant. » Plateforme de réservation pour enseignes d'entretien automobile : réserver, modifier, annuler ses RDV en direct avec le centre.<ul><li>Stack : Vite 5 + React 18 + TypeScript 5.6.</li><li>Design « Liquid Glass » sur-mesure (Tailwind).</li><li>React Router 6 — URLs partageables &amp; deep-linking depuis QR codes.</li><li>Tests Vitest + Testing Library.</li></ul>",
+   body_en:"\"The garage, instantly.\" Booking platform for car-maintenance brands: book, edit, cancel appointments directly with the center.<ul><li>Stack: Vite 5 + React 18 + TypeScript 5.6.</li><li>Custom \"Liquid Glass\" design (Tailwind).</li><li>React Router 6 — shareable URLs &amp; QR deep-linking.</li><li>Vitest + Testing Library tests.</li></ul>",
+   tags:["React","Vite","TypeScript","Tailwind","Vitest"], gh:"booka"},
+
+  {ic:"🗣️",icon_status:"b-mvp",status_fr:"Avancé",status_en:"Advanced",
+   title:"LinguaFlow", meta_fr:"EdTech · apprentissage des langues (IA)", meta_en:"EdTech · language learning (AI)",
+   short_fr:"App gamifiée anglais + mandarin, axée écoute/parole, multi-LLM en BYOK.",
+   short_en:"Gamified English + Mandarin app, listening/speaking focus, multi-LLM BYOK.",
+   body_fr:"« Listen. Speak. Repeat. » App d'apprentissage des langues centrée <b>uniquement</b> sur l'écoute et la parole (pas d'écrit ; pinyin + audio pour le chinois).<ul><li>React + Vite + Tailwind + Framer Motion.</li><li><b>Web Speech API</b> (reconnaissance &amp; synthèse vocale).</li><li>Couche IA <b>BYOK multi-providers</b> : Mistral, Anthropic, OpenAI, Google, DeepSeek.</li><li>100% statique, aucune donnée serveur (clé stockée en local).</li></ul>",
+   body_en:"\"Listen. Speak. Repeat.\" Language app focused <b>only</b> on listening and speaking (no writing; pinyin + audio for Chinese).<ul><li>React + Vite + Tailwind + Framer Motion.</li><li><b>Web Speech API</b> (speech recognition &amp; synthesis).</li><li><b>BYOK multi-provider</b> AI layer: Mistral, Anthropic, OpenAI, Google, DeepSeek.</li><li>Fully static, no server data (key stored locally).</li></ul>",
+   tags:["React","Vite","Web Speech API","LLM / BYOK","Framer Motion"]},
+
+  {ic:"📚",icon_status:"b-wip",status_fr:"Prototype",status_en:"Prototype",
+   title:"The Archivist Codex", meta_fr:"EdTech · hub de savoir pour pros tech", meta_en:"EdTech · knowledge hub for tech pros",
+   short_fr:"Hub web : modules, formules de code prêtes à l'emploi, ressources curatées, forum.",
+   short_en:"Web hub: modules, ready-to-use code formulas, curated resources, forum.",
+   body_fr:"Plateforme single-page (HTML/CSS/JS) pour développeurs, data analysts &amp; data scientists.<ul><li>Modules savoir-faire (technique) &amp; savoir-être (posture pro).</li><li>Formules de code prêtes à copier-adapter.</li><li>Hub de ressources externes curaté + recherche autocomplete.</li><li>3 filières : Développeur · Data Analyst · Data Scientist.</li></ul>",
+   body_en:"Single-page platform (HTML/CSS/JS) for developers, data analysts &amp; data scientists.<ul><li>Hard-skill &amp; soft-skill modules.</li><li>Copy-and-adapt code formulas.</li><li>Curated external-resource hub + autocomplete search.</li><li>3 tracks: Developer · Data Analyst · Data Scientist.</li></ul>",
+   tags:["HTML","CSS","JavaScript","UX"]},
+
+  {ic:"🧩",icon_status:"b-wip",status_fr:"v2.0",status_en:"v2.0",
+   title:"VersaCode", meta_fr:"Outil développeur · compilateur", meta_en:"Developer tool · compiler",
+   short_fr:"Mélangez HTML, CSS, Python, JS, SQL, Rust, Go dans un seul fichier .vc.",
+   short_en:"Mix HTML, CSS, Python, JS, SQL, Rust, Go in a single .vc file.",
+   body_fr:"Format &amp; outil permettant de combiner plusieurs langages dans un seul fichier <code>.vc</code>, puis de compiler vers des fichiers séparés.<ul><li>Moteur de parsing en Python (variables <code>@var</code>, blocs <code>@html/@css/...</code>).</li><li>Build en exécutable (.exe) autonome.</li><li>Documentation &amp; exemples générés.</li></ul>",
+   body_en:"Format &amp; tool to combine several languages in one <code>.vc</code> file, then compile to separate files.<ul><li>Python parsing engine (<code>@var</code> variables, <code>@html/@css/...</code> blocks).</li><li>Standalone executable (.exe) build.</li><li>Generated docs &amp; examples.</li></ul>",
+   tags:["Python","Parser / Compiler","CLI","Tooling"]},
+
+  {ic:"🎰",icon_status:"b-wip",status_fr:"v8+",status_en:"v8+",
+   title:"EuroMillions Predictor", meta_fr:"Data Science · ML / DL", meta_en:"Data Science · ML / DL",
+   short_fr:"Analyse statistique, simulation et ML/DL pour la génération de grilles.",
+   short_en:"Statistical analysis, simulation and ML/DL for grid generation.",
+   body_fr:"Outil d'analyse et d'expérimentation (aucune garantie de gain).<ul><li>Analyse statistique &amp; simulation Monte-Carlo.</li><li>Modèles ML/DL (PyTorch) pour exploration de motifs.</li><li>Génération de grilles, visualisations.</li></ul>",
+   body_en:"Analysis & experimentation tool (no win guarantee).<ul><li>Statistical analysis &amp; Monte-Carlo simulation.</li><li>ML/DL models (PyTorch) for pattern exploration.</li><li>Grid generation, visualizations.</li></ul>",
+   tags:["Python","PyTorch","NumPy","Data Science"]},
+
+  {ic:"✈️",icon_status:"b-live",status_fr:"Certif Jedha",status_en:"Jedha cert",
+   title:"Kayak — Data Project", meta_fr:"Data Engineering · recommandation", meta_en:"Data Engineering · recommendation",
+   short_fr:"Projet de certification : recommandation de destinations + hôtels (météo + data).",
+   short_en:"Certification project: destination + hotel recommendation (weather + data).",
+   body_fr:"Cas marketing (Kayak / Booking Holdings) du bootcamp Jedha.<ul><li>Collecte de données (API météo, scraping hôtels).</li><li>Pipeline ETL &amp; stockage (data lake / S3).</li><li>Recommandation objective de destinations basée sur données réelles.</li><li>Dossier de soutenance complet (rapport technique).</li></ul>",
+   body_en:"Marketing case (Kayak / Booking Holdings) from the Jedha bootcamp.<ul><li>Data collection (weather API, hotel scraping).</li><li>ETL pipeline &amp; storage (data lake / S3).</li><li>Objective destination recommendation from real data.</li><li>Full defense package (technical report).</li></ul>",
+   tags:["Python","ETL","Data Engineering","APIs","AWS S3"]},
+
+  {ic:"💞",icon_status:"b-live",status_fr:"Certif Jedha",status_en:"Jedha cert",
+   title:"Speed Dating — EDA", meta_fr:"Analyse exploratoire (bloc #2)", meta_en:"Exploratory analysis (block #2)",
+   short_fr:"EDA sur 8378 speed-dates / 195 variables pour comprendre l'attractivité (cas Tinder).",
+   short_en:"EDA on 8,378 speed-dates / 195 variables to understand attraction (Tinder case).",
+   body_fr:"Projet obligatoire de certification (bloc #2 — analyse de données).<ul><li>Dataset Columbia Business School (2002-2004) : 8378 rencontres, 195 variables.</li><li>Nettoyage, analyse exploratoire, visualisations.</li><li>Insights sur les facteurs d'un « match » mutuel.</li><li>Dossier de soutenance complet.</li></ul>",
+   body_en:"Mandatory certification project (block #2 — data analysis).<ul><li>Columbia Business School dataset (2002-2004): 8,378 dates, 195 variables.</li><li>Cleaning, exploratory analysis, visualizations.</li><li>Insights on what drives a mutual \"match\".</li><li>Full defense package.</li></ul>",
+   tags:["Python","Pandas","EDA","Data Viz","Statistics"]}
+];
+
+const SKILLS = [
+  {h:"💻 "+"Langages|Languages", t:["Python","TypeScript","JavaScript","SQL","HTML/CSS"]},
+  {h:"⚛️ "+"Frameworks &amp; Libs|Frameworks &amp; Libs", t:["React","Vite","Next.js","Tailwind","Framer Motion","PWA"]},
+  {h:"🧠 "+"Data &amp; IA|Data &amp; AI", t:["Machine Learning","Deep Learning","PyTorch","Pandas / NumPy","LLM / RAG","BYOK multi-provider"]},
+  {h:"☁️ "+"Cloud &amp; Infra|Cloud &amp; Infra", t:["AWS (S3, Cloud)","Supabase / Postgres","Vercel","Git / GitHub","Docker","Vitest"]},
+  {h:"🎯 "+"Domaines|Domains", t:["Applications métier|Business apps","Data Engineering","Automatisation|Automation","UX produit|Product UX","SaaS"]},
+  {h:"🤝 "+"Savoir-être|Soft skills", t:["Management d'équipe|Team management","Pilotage par la data|Data-driven","Autonomie|Autonomy","Rigueur|Rigor","Relation client|Client relations"]}
+];
+
+const XP = [
+  {t:"Merchandiseur GMS", o:"Léa Nature / Jardin Bio", p_fr:"Oct 2025 – Mars 2026", p_en:"Oct 2025 – Mar 2026",
+   d_fr:"Implantation et mise en rayon de produits bio en GMS, optimisation du facing, suivi des stocks et réassort.",
+   d_en:"Bio-product merchandising in retail, facing optimization, stock monitoring and replenishment."},
+  {t:"Responsable Animalerie|Pet-store Manager", o:"Intermarché – Creysse", p_fr:"Nov 2024 – Août 2025", p_en:"Nov 2024 – Aug 2025",
+   d_fr:"Réorganisation complète du rayon pour redresser le CA, actions promotionnelles, suivi rigoureux des KPI, gestion d'inventaire.",
+   d_en:"Full department reorg to recover revenue, promotions, rigorous KPI tracking, inventory management."},
+  {t:"Caviste|Wine Specialist", o:"Intermarché – Creysse", p_fr:"Mars 2024 – Nov 2024", p_en:"Mar 2024 – Nov 2024",
+   d_fr:"Gestion d'inventaire et rotation des stocks, animations &amp; dégustations, partenariats avec producteurs locaux.",
+   d_en:"Inventory & stock rotation, tastings & events, partnerships with local producers."},
+  {t:"Employé Libre Service PGC|Retail Associate", o:"Intermarché – Creysse", p_fr:"Août 2022 – Mars 2024", p_en:"Aug 2022 – Mar 2024",
+   d_fr:"Gestion des stocks et approvisionnements, formation des nouveaux employés, optimisation de la présentation produits.",
+   d_en:"Stock & supply management, onboarding new staff, product-presentation optimization."},
+  {t:"Ingénieur Commercial|Sales Engineer", o:"Groupe Séquences", p_fr:"Sept 2021 – Mai 2022", p_en:"Sep 2021 – May 2022",
+   d_fr:"Stratégies de vente personnalisées, gestion d'un portefeuille client diversifié, solutions sur mesure.",
+   d_en:"Tailored sales strategies, diversified client portfolio, custom solutions."},
+  {t:"Responsable de Magasin|Store Manager", o:"Zeeman – Pamiers", p_fr:"Oct 2015 – Nov 2020", p_en:"Oct 2015 – Nov 2020",
+   d_fr:"Management des équipes de vente, merchandising innovant, suivi des stocks réduisant les pertes.",
+   d_en:"Sales-team management, innovative merchandising, stock control reducing shrinkage."},
+  {t:"Technico-Commercial|Technical Sales Rep", o:"Starcolor", p_fr:"Avr 2007 – Mars 2015", p_en:"Apr 2007 – Mar 2015",
+   d_fr:"Relations clients stratégiques (+20% de ventes annuelles), salons professionnels, portefeuille clients.",
+   d_en:"Strategic client relations (+20% annual sales), trade shows, client portfolio."},
+  {t:"Directeur de Magasin|Store Director", o:"Gémo", p_fr:"Août 1997 – Juin 2006", p_en:"Aug 1997 – Jun 2006",
+   d_fr:"Leadership d'une équipe de 15 personnes, plans de merchandising, analyse des ventes &amp; croissance du CA.",
+   d_en:"Leadership of a 15-person team, merchandising plans, sales analysis & revenue growth."}
+];
+
+/* ---------- RENDER ---------- */
+function curLang(){return document.documentElement.lang}
+function pick(s){
+  if(typeof s!=="string"||!s.includes("|")) return s;
+  const [fr,en]=s.split("|"); return curLang()==="en"?en:fr;
+}
+function renderProjects(){
+  const lang=curLang();
+  document.getElementById('projGrid').innerHTML = PROJECTS.map((p,i)=>`
+    <div class="proj glass" onclick="openProj(${i})">
+      <span class="badge-status ${p.icon_status}">${lang==='en'?p.status_en:p.status_fr}</span>
+      <div class="ic">${p.ic}</div>
+      <h4>${p.title}</h4>
+      <div class="pmeta">${lang==='en'?p.meta_en:p.meta_fr}</div>
+      <p>${lang==='en'?p.short_en:p.short_fr}</p>
+      <div class="tags">${p.tags.slice(0,4).map(t=>`<span class="tag">${pick(t)}</span>`).join('')}</div>
+      <div class="more">${lang==='en'?'details →':'détails →'}</div>
+    </div>`).join('');
+}
+function renderSkills(){
+  document.getElementById('skillGrid').innerHTML = SKILLS.map(s=>{
+    const [emoji,...rest]=s.h.split(' ');
+    const label=pick(rest.join(' '));
+    return `<div class="skill-cat glass"><h4>${emoji} ${label}</h4>
+      <div class="tags">${s.t.map(t=>`<span class="tag">${pick(t)}</span>`).join('')}</div></div>`;
+  }).join('');
+}
+function renderXp(){
+  const lang=curLang();
+  document.getElementById('xpList').innerHTML = XP.map(x=>`
+    <div class="xp">
+      <h4>${pick(x.t)}</h4>
+      <div class="org">${x.o}</div>
+      <div class="period">${lang==='en'?x.p_en:x.p_fr}</div>
+      <p>${lang==='en'?x.d_en:x.d_fr}</p>
+    </div>`).join('');
+}
+function openProj(i){
+  const p=PROJECTS[i], lang=curLang();
+  document.getElementById('mTitle').innerHTML=`${p.ic} ${p.title}`;
+  document.getElementById('mMeta').textContent=lang==='en'?p.meta_en:p.meta_fr;
+  document.getElementById('mBody').innerHTML=lang==='en'?p.body_en:p.body_fr;
+  document.getElementById('mTags').innerHTML=p.tags.map(t=>`<span class="tag">${pick(t)}</span>`).join('');
+  let links='';
+  if(p.gh) links+=`<a class="btn" href="https://github.com/delestrestd/${p.gh}" target="_blank">🐙 GitHub</a>`;
+  document.getElementById('mLinks').innerHTML=links;
+  openModal('projModal');
+}
+function openPhoto(){openModal('photoModal')}
+function openModal(id){document.getElementById(id).classList.add('open');document.body.style.overflow='hidden'}
+function closeModal(id){document.getElementById(id).classList.remove('open');document.body.style.overflow=''}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal('projModal');closeModal('photoModal')}});
+function setLang(l){
+  document.documentElement.lang=l;
+  document.getElementById('bFr').classList.toggle('active',l==='fr');
+  document.getElementById('bEn').classList.toggle('active',l==='en');
+  renderProjects();renderSkills();renderXp();
+}
+function animBars(){document.querySelectorAll('.fill').forEach(f=>{f.style.width=f.dataset.w})}
+renderProjects();renderSkills();renderXp();
+window.addEventListener('load',()=>setTimeout(animBars,300));
+</script>
+</body>
+</html>
